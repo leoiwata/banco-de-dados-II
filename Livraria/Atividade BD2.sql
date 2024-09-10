@@ -34,8 +34,8 @@ CREATE TABLE ItensPedido (
     FOREIGN KEY (LivroID) REFERENCES Livros(LivroID)
 );
 INSERT INTO Clientes (Nome, Endereco, Telefone, Email, data_de_criacao, senha) VALUES 
-('Ana Souza', 'Rua A, 123', '1234-5678', 'ana.souza@email.com', '2024-09-01', 'senha123'),
-('Carlos Silva', 'Rua B, 234', '2345-6789', 'carlos.silva@email.com', '2024-09-02', 'senha234'),
+('Ana Souza', 'Rua A, 123', '1234-5678', 'ana.souza@email.com', '2024-10-01', 'senha123'),
+('Carlos Silva', 'Rua B, 234', '2345-6789', 'carlos.silva@email.com', '2024-10-02', 'senha234'),
 ('Fernanda Lima', 'Rua C, 345', '3456-7890', 'fernanda.lima@email.com', '2024-09-03', 'senha345'),
 ('Gustavo Oliveira', 'Rua D, 456', '4567-8901', 'gustavo.oliveira@email.com', '2024-09-04', 'senha456'),
 ('Juliana Costa', 'Rua E, 567', '5678-9012', 'juliana.costa@email.com', '2024-09-05', 'senha567'),
@@ -106,4 +106,53 @@ INSERT INTO ItensPedido (PedidoID, LivroID, Quantidade) VALUES
 select * from clientes
 order by nome asc
 
+-- Quantos Usuarios foram cadastrados no ultimo mês?
+select Nome,data_de_criacao
+from clientes
+where month(data_de_criacao)=10;
 
+-- Criar script restaurar informações de login de 1 usuário!
+update cliente
+set
+	senha = 'nova_senha_segura', 
+    Telefone = '0000-0000', 
+    Email = 'novo.email@dominio.com', 
+    data_criacao_conta = '2024-09-01' 
+WHERE ClienteID = 1;
+
+select * from Clientes;
+
+
+-- Criar script selecão de Livros cadastrados?
+select * from livros
+order by Titulo asc;
+
+-- Criar script de livros emprestados por cliente?
+SELECT c.Nome NomeCliente, l.Titulo TituloLivro, ip.Quantidade Quantidade
+FROM Clientes c
+JOIN Pedidos p ON c.ClienteID = p.ClienteID
+JOIN ItensPedido ip ON p.PedidoID = ip.PedidoID
+JOIN Livros l ON ip.LivroID = l.LivroID
+WHERE c.ClienteID = 4;
+
+-- Elaborar 3 perguntas utilizando as clausulas: Distinct, Not , Top
+
+-- Distinct
+-- Quais editora diferentes publicaram livros na biblioteca?
+SELECT DISTINCT Editora
+FROM Livros;
+
+-- Not
+SELECT Titulo, Autor, Editora, AnoPublicacao, Preco
+FROM Livros
+WHERE Editora NOT LIKE 'Rocco';
+
+-- Top
+SELECT TOP 5 Titulo, Autor, AnoPublicacao
+FROM Livros
+ORDER BY AnoPublicacao DESC;
+-- O top não vai entao usamos o Limit 
+SELECT Titulo, Autor, AnoPublicacao
+FROM Livros
+ORDER BY AnoPublicacao DESC
+LIMIT 5;
